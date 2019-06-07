@@ -9,7 +9,7 @@ airtable.configure({
 var query = airtable.base('app6Vas60DNc0g354')('Imported table')
 
 export async function getData(){
-    let shares = [];
+    let shares = {};
     try{
         shares = await new Promise(function(resolve, reject){
             query.select({
@@ -18,13 +18,12 @@ export async function getData(){
                 fields: ['date', 'open']
             }).eachPage(function page(records, fetchNextPage){
                 records.forEach(function(record){
-                    shares.push({
+                    shares[record.get('date')] = {
                         id: record.id,
-                        date: record.get('date'),
+                        date: new Date(record.get('date')),
                         isEmpty: record.get('open')<=0?true:false,
                         open: record.get('open'),
-                    })
-                    // console.log('Retrieved', record.get('date'),record.get('open'))
+                    }
                 })
                 fetchNextPage();
             }, function done(err){
@@ -32,7 +31,7 @@ export async function getData(){
                     console.log('Errors in getData:', err);
                     reject(err);
                 } else {
-                    console.log(shares)
+                    console.log('Inside getData, : ',shares)
                     resolve(shares);
                 }
             })
@@ -46,7 +45,7 @@ export async function getData(){
 }
 
 export async function updateData(shareObj, value){
-    let isUpdate;
+    let isUpdate = false;
     try{
         isUpdate = await new Promise( function(resolve, reject){
             query.update(shareObj.id,{
@@ -56,7 +55,7 @@ export async function updateData(shareObj, value){
                     console.log('inside query error function', err)
                     resolve(false)
                 } else {
-                    resolve(true);
+                    resolve(true)
                 }
             })
         })

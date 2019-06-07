@@ -1,26 +1,29 @@
-import React,{useContext, useEffect} from 'react'
+import React from 'react'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
-import ShareContext from '../util/ShareContext'
-import {getData} from '../util/airtableApi'
+// import ShareContext from '../util/ShareContext'
+// import {getData} from '../util/airtableApi'
 // import timeGridPlugin from '@fullcalendar/timegrid'
 // import interactionPlugin from '@fullcalendar/interaction' 
 
 import './main.css' // webpack must be configured to do this
 
 function CalendarUI(){
-    const shareContextObj = useContext(ShareContext)
+    // const shareContextObj = useContext(ShareContext)
     
-    useEffect( () => {
-        let shares;
-        async function fetchShares(){
-            shares = await getData();
-            shareContextObj.updateShares(shares);
-            console.log(shareContextObj.shares)
-        }
-        fetchShares();
-    }, [shareContextObj]);
+    // useEffect( () => {
+    //     let shares;
+    //     async function fetchShares(){
+    //         shares = await getData();
+    //         shareContextObj.updateShares(shares);
+    //         console.log(shareContextObj.shares)
+    //     }
+    //     fetchShares();
+    // }, [shareContextObj]);
 
+    // useEffect( ()=>{
+    //     console.log('from Calender UI sharesContext',shareContextObj.shares);
+    // })
     return (
         <FullCalendar
             defaultView="dayGridMonth"

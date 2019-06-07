@@ -1,5 +1,3 @@
 import React from 'react'
 //Creating Context currently not approaching with Redux
-let ShareContext = React.createContext()
-
-export default ShareContext;
+export default React.createContext({shares:{}, updateShares: ()=>{}});
