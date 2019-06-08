@@ -19,19 +19,21 @@
     padding: 10px;
     justify-self: flex-start;
 }
-.box-share{
+.box-button{
     padding: 0 5px;
-    width: 75%;
     height: 34px;
     border-radius: 5px;
-    
+
     font-size: 14px;
     text-align: center;
     line-height: 34px;
     
     background: greenyellow;
     cursor: pointer;
-
+}
+.box-share{
+    width: 75%;
+    
     justify-self: center;
     align-self: center;
 }

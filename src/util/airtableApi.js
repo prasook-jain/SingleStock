@@ -8,7 +8,98 @@ airtable.configure({
 
 var query = airtable.base('app6Vas60DNc0g354')('Imported table')
 
-export async function getData(){
+export async function createData(date, shareValue){
+    let newShare = {};
+
+    try{
+        newShare = await new Promise((resolve, reject) => {
+            query.create({
+                "date": date,
+                "close": 205.95,
+                "volume": 20206666,
+                "open": shareValue,
+                "high": 211,
+                "low": 201.8
+            }, function(err, record) {
+                if (err) {
+                  console.error(err);
+                  newShare = {}
+                  console.log('Err in async call : ', err);
+                  reject(err)
+                } else {
+                    resolve({
+                        id:record.getId(),
+                        date: new Date(record.get('date')),
+                        isEmpty: record.get('open')<=0?true:false,
+                        open: shareValue
+                    })
+                }
+            });
+        })
+    } catch(err) {
+        console.log('Inside CreateData Err:', err);
+        newShare = {}
+    }
+    return newShare
+}
+
+export async function updateData(shareObj, value){
+    let isUpdate = false;
+    try{
+        isUpdate = await new Promise( function(resolve, reject){
+            query.update(shareObj.id,{
+                'open': value,
+            }, function done(err){
+                if(err){
+                    console.log('inside query error function', err)
+                    resolve(false)
+                } else {
+                    resolve(true)
+                }
+            })
+        })
+    } catch(err){
+        isUpdate = false;
+        console.log('error inside catch pharse',err);
+    }
+    return isUpdate;
+}
+
+// async function update(){
+//     let shareObj = (await getData())[0];
+//     console.log('update function', await updateData(shareObj, shareObj.open))
+// }
+// update();
+
+export async function deleteData(shareObj){
+    let isDelete;
+    try{
+        isDelete = await new Promise( function(resolve, reject){
+            query.destroy(shareObj.id, function done(err, deletedRecord){
+                if(err){
+                    console.error('Error inside deleteData', err)
+                    resolve(false)
+                } else {
+                    console.log(deletedRecord)
+                    resolve(true)
+                }
+            })
+        })
+    } catch(err){
+        isDelete = false
+        console.log('Inside catch of deleteData ', err);
+    }
+    return isDelete;
+}
+
+// async function deleteFn(){
+//     let shareObj = (await getData())[0]
+//     console.log('delete function', await deleteData(shareObj));
+// }
+
+// deleteFn()
+
+export default async function getData(){
     let shares = {};
     try{
         shares = await new Promise(function(resolve, reject){
@@ -43,60 +134,3 @@ export async function getData(){
     }
     return shares
 }
-
-export async function updateData(shareObj, value){
-    let isUpdate = false;
-    try{
-        isUpdate = await new Promise( function(resolve, reject){
-            query.update(shareObj.id,{
-                'open': value,
-            }, function done(err){
-                if(err){
-                    console.log('inside query error function', err)
-                    resolve(false)
-                } else {
-                    resolve(true)
-                }
-            })
-        })
-    } catch(err){
-        isUpdate = false;
-        console.log('error inside catch pharse',err);
-    }
-    return isUpdate;
-}
-
-// async function update(){
-//     let shareObj = (await getData())[0];
-//     console.log('update function', await updateData(shareObj, shareObj.open))
-// }
-// update();
-
-export async function deleteData(shareObj){
-    let isDelete;
-    try{
-        isDelete = await updateData(shareObj, -1);
-        // new Promise( function(resolve, reject){
-        //     query.destroy(shareObj.id, function done(err, deletedRecord){
-        //         if(err){
-        //             console.error('Error inside deleteData', err)
-        //             resolve(false)
-        //         } else {
-        //             console.log(deletedRecord)
-        //             resolve(true)
-        //         }
-        //     })
-        // })
-    } catch(err){
-        isDelete = false
-        console.log('Inside catch of deleteData ', err);
-    }
-    return isDelete;
-}
-
-// async function deleteFn(){
-//     let shareObj = (await getData())[0]
-//     console.log('delete function', await deleteData(shareObj));
-// }
-
-// deleteFn()

@@ -1,14 +1,15 @@
 import React, {useState, useEffect} from 'react';
 import './App.css';
-import CalendarUI from './components/CalendarUI';
 import Calendar from './components/Calendar';
 import ShareContext from './util/ShareContext';
-import {getData} from './util/airtableApi'
+import getData from './util/airtableAPI'
 
 
 function App() {
 
   const [data, setData] = useState({shares:{}, isFetched: false});
+  const [month, setMonth] = useState(0)
+  const [year, setYear] = useState(2019)
 
   // Fetch Data for first time when App component mount
   useEffect( () => {
@@ -29,6 +30,14 @@ function App() {
 
   return (
     <ShareContext.Provider value={{
+      month: month,
+      updateMonth : (month)=>{
+        setMonth(month)
+      },
+      year: year,
+      updateYear : (year)=>{
+        setYear(year)
+      },
       shares : data.shares,
       updateShares : (shares)=>{
           setData({
