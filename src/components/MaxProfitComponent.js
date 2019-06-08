@@ -67,7 +67,7 @@ function MaxProfitComponent(props){
         let [maxProfit, maxIndex, minIndex] = findMax(startDate, endDate, data);
         
         
-        setMaxProfit(maxProfit)
+        setMaxProfit(maxProfit*10) //As in instruction said only 10 share and once
         if(maxIndex !== minIndex){
             setProfitBuyDate(new Date(data[minIndex][0]))
             setProfitSaleDate(new Date(data[maxIndex][0]))
