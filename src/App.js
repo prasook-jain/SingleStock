@@ -1,13 +1,13 @@
-import React, {useState, useEffect} from 'react';
-import './App.css';
-import Calendar from './components/Calendar';
-import ShareContext from './util/ShareContext';
+import React, {useState, useEffect} from 'react'
+import './App.css'
+import Calendar from './components/Calendar'
+import ShareContext from './util/ShareContext'
 import getData from './util/airtableAPI'
-
+import RightPanel from './components/RightPanel'
 
 function App() {
 
-  const [data, setData] = useState({shares:{}, isFetched: false});
+  const [data, setData] = useState({shares:{}, isFetched: false})
   const [month, setMonth] = useState(0)
   const [year, setYear] = useState(2019)
 
@@ -46,7 +46,10 @@ function App() {
       },
     }}>
       <div className="App">
-        <Calendar />
+        <div className="left-panel">
+          <Calendar />
+        </div>
+        <RightPanel />
       </div>
     </ShareContext.Provider>
   );

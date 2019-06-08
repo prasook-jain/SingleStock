@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import DateComponent from './DateComponent'
 import dateFn from 'date-fns'
 
@@ -49,6 +49,12 @@ function Calendar(){
         WeeksDiv.push(<div key={WeeksDiv.length} className="week-header"><span>{day}</span></div>);
     });
 
+    //Effective on change of month from right-panel
+    useEffect(()=>{
+        setMonth(shareContextObject.month)
+        setYear(shareContextObject.year)
+        setDates(getDates(shareContextObject.month,shareContextObject.year))
+    },[shareContextObject.month,shareContextObject.year])
     const changePopUp = () => {
         setPopUp(!isPopUp)
     }
