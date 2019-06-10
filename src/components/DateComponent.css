@@ -50,3 +50,7 @@
 .box:hover .box-close-button{
     opacity: 0.5;
 }
+
+.start-date, .end-date{
+    background: rgb(240, 240, 240);
+}

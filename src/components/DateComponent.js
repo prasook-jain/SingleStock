@@ -23,7 +23,7 @@ function DateComponent(props){
                 setShare({})
             }
         }
-    }, [shareContextObject, share, date])
+    }, [shareContextObject.shares, date])
 
     useEffect( ()=> {
         setDate(props.date)
@@ -135,7 +135,7 @@ function DateComponent(props){
     }
 
     return(
-        <div className={"box "+(props.isMonth?"":"opaque")}>
+        <div className={"box "+(props.isMonth?"":"opaque ")+(date.getTime()===shareContextObject.startDate.getTime()?"start-date":"")+(date.getTime()===shareContextObject.endDate.getTime()?"end-date":"")}>
             {Object.values(share).length?<div className="box-close-button" onClick={deleteShare}>x</div>:""}
             <div className="box-date" onClick={toggleAdd}>
                 {date.getDate()}

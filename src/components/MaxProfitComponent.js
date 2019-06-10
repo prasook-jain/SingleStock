@@ -1,31 +1,32 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import dateFn from 'date-fns'
-
+import ShareContext from '../util/ShareContext'
+import './MaxProfitComponent.css'
 
 //Helper function to find Max (DS-Algo)
 const findMax = (startDate, endDate, data)=>{
-    let startPush = false
+    let isInRange = false
     let startIndex = -1;
     let considerShares = [];
-    
+    console.log('Inside findMax fn',startDate, endDate, data)
     for(let i=0; i<data.length; i++){
         let elem = data[i]
-        if(elem[0]===startDate.getTime()){
-            startPush = true;
+        
+        if(elem[0] >= startDate.getTime() && !isInRange){
+            isInRange = true;
             startIndex = i;
         }
-        if(startPush){
+        if(isInRange){
             considerShares.push(elem[1])
         }
-        if(elem[0]===endDate.getTime()){
-            startPush = false;
+        if(elem[0] >= endDate.getTime()){
+            isInRange = false;
             break;
         }
     }
 
-    // int maxProfit(vector<int>& prices) {
-    if(considerShares.length === 0){
-        return [0,0,0];
+    if(considerShares.length <= 1){
+        return [0,0,0, -1];
     }
 
     let maxProfit = 0;
@@ -47,39 +48,59 @@ const findMax = (startDate, endDate, data)=>{
     }
     maxIndex += startIndex
     minIndex += startIndex
-    return [maxProfit, maxIndex, minIndex];
+    if(maxIndex === minIndex){
+        return [maxProfit, maxIndex, minIndex, -2]
+    }
+    return [maxProfit, maxIndex, minIndex, 1];
 }
 
 
 function MaxProfitComponent(props){
 
+    let shareContextObject = useContext(ShareContext)
+
     //States
-    // let [initialProfit, initialMaxIndex, initialMinIndex] = findMax(props.startDate, props.endDate, props.data);
     const [maxProfit, setMaxProfit] = useState(0)
-    const [profitBuyDate, setProfitBuyDate] = useState('')
-    const [profitSaleDate, setProfitSaleDate] = useState('')
+    const [profitBuyDate, setProfitBuyDate] = useState('No share values')
+    const [profitSaleDate, setProfitSaleDate] = useState('No share values')
 
     useEffect(()=>{
-        let startDate = props.startDate
-        let endDate = props.endDate
+        let startDate = shareContextObject.startDate
+        let endDate = shareContextObject.endDate
         let data = props.data
-
-        let [maxProfit, maxIndex, minIndex] = findMax(startDate, endDate, data);
-        
+        console.log('when props.data changes ', startDate.getDate(), endDate.getDate(), props.data)
+        let [maxProfit, maxIndex, minIndex, msgStatus] = findMax(startDate, endDate, data);
+        console.log('after findMax calculation', maxProfit, maxIndex, minIndex)
         
         setMaxProfit(maxProfit*10) //As in instruction said only 10 share and once
-        if(maxIndex !== minIndex){
+        if(msgStatus === 1){
             setProfitBuyDate(new Date(data[minIndex][0]))
             setProfitSaleDate(new Date(data[maxIndex][0]))
+        } else if(msgStatus === -2){
+            // console.log('(Inside Max Profit) : data.length', data.length)
+            setProfitBuyDate('No Possible Profit')
+            setProfitSaleDate('No Possible Profit')
+        } else {
+            setProfitBuyDate('No share values')
+            setProfitSaleDate('No share values')
         }
 
-    }, [props.endDate, props.startDate, props.data])
+    }, [shareContextObject.startDate, shareContextObject.endDate, props.data])
 
     return(
         <div className="max-profit">
-            <p>Max Profit : {maxProfit}</p>
-            <p>Buy Date: {profitBuyDate?dateFn.format(profitBuyDate,'DD-MMM-YYYY'):"Input Date"}</p>
-            <p>Sale Date : {profitSaleDate?dateFn.format(profitSaleDate,'DD-MMM-YYYY'):"Input Date"}</p>
+            <p className="row-info"> 
+                <span className="label">Max Profit :</span>
+                <span className="result"> {maxProfit.toFixed(2)}</span>
+            </p>
+            <p className="row-info">
+                <span className="label">Buy Date :</span>
+                <span className="result"> {typeof profitBuyDate!=='string'?dateFn.format(profitBuyDate,'DD-MMM-YYYY'):profitBuyDate}</span>
+            </p>
+            <p className="row-info">
+                <span className="label">Sale Date :</span>
+                <span className="result"> {typeof profitSaleDate!=='string'?dateFn.format(profitSaleDate,'DD-MMM-YYYY'):profitSaleDate}</span>
+            </p>
         </div>
     )
 }

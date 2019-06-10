@@ -8,8 +8,8 @@ import RightPanel from './components/RightPanel'
 function App() {
 
   const [data, setData] = useState({shares:{}, isFetched: false})
-  const [month, setMonth] = useState(0)
-  const [year, setYear] = useState(2019)
+  const [startDate, setStartDate] = useState(new Date('2019-01-01'))
+  const [endDate, setEndDate] = useState(new Date('2019-01-31'))
 
   // Fetch Data for first time when App component mount
   useEffect( () => {
@@ -30,20 +30,20 @@ function App() {
 
   return (
     <ShareContext.Provider value={{
-      month: month,
-      updateMonth : (month)=>{
-        setMonth(month)
-      },
-      year: year,
-      updateYear : (year)=>{
-        setYear(year)
-      },
       shares : data.shares,
       updateShares : (shares)=>{
           setData({
             shares: shares,
           })
       },
+      startDate: startDate,
+      updateStartDate : (newDate) => {
+        setStartDate(newDate)
+      },
+      endDate: endDate,
+      updateEndDate : (newDate) => {
+        setEndDate(newDate)
+      }
     }}>
       <div className="App">
         <div className="left-panel">

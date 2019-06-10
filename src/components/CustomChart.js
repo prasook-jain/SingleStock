@@ -6,30 +6,30 @@ import HighchartsReact from 'highcharts-react-official'
 function CustomChart(props){
     let shareContextObject = useContext(ShareContext)
 
-    let [data, setData] = useState([[(new Date(2019, 6, 1)).getTime(),1],
-        [(new Date(2019, 6, 2)).getTime(),2],
-        [(new Date(2019, 6, 3)).getTime(),3],
-        [(new Date(2019, 6, 4)).getTime(),4],
-        [(new Date(2019, 6, 5)).getTime(),3],
-        [(new Date(2019, 6, 6)).getTime(),6]
-    ])
-
-    useEffect(() => {
-        setData(props.data)
-    }, [props.data])
-
-    const options = {
+    let [data, setData] = useState([])
+    let [startDate, setStartDate] = useState(shareContextObject.startDate)
+    let [endDate, setEndDate] = useState(shareContextObject.endDate)
+    let options ={
         plotOptions: {
             series: {
-                pointStart: props.endDate,
+                pointStart: startDate,
+                // pointInterval: 24 * 3600 * 1000
             }
         },
         xAxis: {
             type: 'datetime'
         },
-        showNavigator: true,
         title: {
             text: '$TSLA Stock Price'
+        },
+        rangeSelector:{
+            allButtonsEnabled: true,
+            buttons: [{
+                type: 'all',
+                text: 'All'
+            }],
+            // selected: 0,
+            inputEnabled: false
         },
         series: [
           {
@@ -39,8 +39,45 @@ function CustomChart(props){
                 valueDecimals: 2
             }
           }
-        ]
-    };
+        ],
+        navigator: {
+            enabled: false
+            // adaptToUpdatedData: false,
+            // series: {
+            //     data: data
+            // }
+        }
+    }
+
+    useEffect(()=>{
+        setStartDate(shareContextObject.startDate)
+        setEndDate(shareContextObject.endDate)
+
+        let isInRange = false;
+        let newData = []
+        for(let i=0; i<props.data.length; i++){
+            let elem = props.data[i]
+            
+            if(elem[0] >= shareContextObject.startDate.getTime() && !isInRange){
+                isInRange = true;
+            }
+            if(isInRange){
+                newData.push(elem)
+            }
+            if(elem[0] >= shareContextObject.endDate.getTime()){
+                isInRange = false;
+                break;
+            }
+        }
+
+        setData(newData)
+        
+    },[ shareContextObject.startDate, shareContextObject.endDate, props.data ])
+
+    // useEffect(()=>{
+    //     // options.plotOptions.series.pointStart = shareContextObject.startDate
+    // })
+
     return(
         <div className="graph">
             <HighchartsReact

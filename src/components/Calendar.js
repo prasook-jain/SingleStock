@@ -6,25 +6,29 @@ import ShareContext from '../util/ShareContext'
 
 import './Calendar.css'
 
+//Helper function to overcome different timezone `new Date(year, month, date)` and `new Date('YYYY-MM-DD')`
+const toLocalString = (year, month, date=1) => {
+    return dateFn.format(new Date(year, month, date), 'YYYY-MM-DD')
+}
 //find all dates in current month
 const getDates = (month, year) => {
-    let startDate = new Date(year, month, 1)
+    let startDate = new Date(toLocalString(year, month, 1))
     let startDay = startDate.getDay()
     let totalDay = dateFn.getDaysInMonth(startDate);
     let tempDate;
     let arr = []
     for(let i=startDay; i>0; i--){
-        tempDate = new Date(year, month, 1);
+        tempDate = new Date(toLocalString(year, month, 1));
         tempDate.setDate(startDate.getDate() - i)
         arr.push(tempDate)
     }
     for(let i=0; i < totalDay; i++ ){
-        tempDate = new Date(year, month, 1);
+        tempDate = new Date(toLocalString(year, month, 1));
         tempDate.setDate(startDate.getDate() + i)
         arr.push(tempDate)
     }
     for(let i=totalDay; i<42-startDay; i++){
-        tempDate = new Date(year, month, 1);
+        tempDate = new Date(toLocalString(year, month, 1));
         tempDate.setDate(startDate.getDate() + i)
         arr.push(tempDate)
     }
@@ -36,8 +40,8 @@ function Calendar(){
     const shareContextObject = useContext(ShareContext)
 
     //States
-    let [month, setMonth] = useState(shareContextObject.month)
-    let [year, setYear] = useState(shareContextObject.year)
+    let [month, setMonth] = useState(shareContextObject.startDate.getMonth())
+    let [year, setYear] = useState(dateFn.getYear(shareContextObject.startDate))
     let [dates, setDates] = useState(getDates(month, year))
     let [isPopUp, setPopUp] = useState(false)
 
@@ -51,10 +55,13 @@ function Calendar(){
 
     //Effective on change of month from right-panel
     useEffect(()=>{
-        setMonth(shareContextObject.month)
-        setYear(shareContextObject.year)
-        setDates(getDates(shareContextObject.month,shareContextObject.year))
-    },[shareContextObject.month,shareContextObject.year])
+        let newMonth = shareContextObject.startDate.getMonth()
+        let newYear = dateFn.getYear(shareContextObject.startDate)
+        setMonth(newMonth)
+        setYear(newYear)
+        setDates(getDates(newMonth,newYear))
+    },[shareContextObject.startDate])
+
     const changePopUp = () => {
         setPopUp(!isPopUp)
     }
@@ -79,28 +86,34 @@ function Calendar(){
 
         // Not using reference just using local variable to save future value.
         // Using it to change other states
-        let tempDate = new Date(year, month, 1);
-        tempDate.setMonth(tempDate.getMonth() + towards)
-        let newMonth = tempDate.getMonth();
-        let newYear = dateFn.getYear(tempDate)    
-        //update the context
-        shareContextObject.updateYear(newYear)
-        shareContextObject.updateMonth(newMonth)
+        let tempStartDate = new Date(toLocalString(year, month, 1))
+        tempStartDate.setMonth(tempStartDate.getMonth() + towards)
 
+        //update the context
+        shareContextObject.updateStartDate(tempStartDate)
+        console.log(dateFn.getDaysInMonth(tempStartDate))
+        console.log(toLocalString(dateFn.getYear(tempStartDate),tempStartDate.getMonth(),dateFn.getDaysInMonth(tempStartDate)))
+        let tempEndDate = new Date(toLocalString(dateFn.getYear(tempStartDate),tempStartDate.getMonth(),dateFn.getDaysInMonth(tempStartDate)));
+        shareContextObject.updateEndDate(tempEndDate)
+        console.log('(From Calender click) start Date : ', tempStartDate)
+        console.log('(From Calender click) end Date : ', tempEndDate)
+        let newMonth = tempStartDate.getMonth()
+        let newYear = dateFn.getYear(tempStartDate)
         let newDates = getDates(newMonth, newYear)
-        
+
         //update current component state
         setMonth(newMonth)
         setYear(newYear)
         setDates(newDates)
 
+        event.preventDefault()
     }
 
     return(
         <div className="calendar-container">
             <div className="calendar-toolbar">
                 <div className="toolbar-button left" onClick={(e) => {clickNav(e,-1)}} >{`<`}</div>
-                <div className="month">{dateFn.format(new Date(year, month, 1), 'MMM YYYY')}</div>
+                <div className="month">{dateFn.format(new Date(toLocalString(year, month, 1)), 'MMM YYYY')}</div>
                 <div className="toolbar-button right" onClick={(e) => {clickNav(e,1)}} >{`>`}</div>
             </div>
             {WeeksDiv}
