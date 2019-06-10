@@ -1,5 +1,7 @@
 import React, {useState} from 'react'
+
 import './AddComponent.css'
+
 function AddComponent(props){
 
     const [shareValue, setShareValue] = useState(props.shareValue)
@@ -10,7 +12,7 @@ function AddComponent(props){
     }
     const handleChange = (event) => {
         let value = Number(event.target.value)
-        console.log(typeof value)
+        // console.log(typeof value)
         if(value){
             setShareValue(value)
         } else {

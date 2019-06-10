@@ -1,7 +1,9 @@
 import React, {useContext, useState, useEffect} from 'react'
+
+import HighchartsReact from 'highcharts-react-official'
+
 import ShareContext from '../util/ShareContext'
 import Highcharts from 'highcharts/highstock'
-import HighchartsReact from 'highcharts-react-official'
 
 function CustomChart(props){
     let shareContextObject = useContext(ShareContext)
@@ -9,43 +11,44 @@ function CustomChart(props){
     let [data, setData] = useState([])
     let [startDate, setStartDate] = useState(shareContextObject.startDate)
     let [endDate, setEndDate] = useState(shareContextObject.endDate)
-    let options ={
-        plotOptions: {
-            series: {
-                pointStart: startDate,
-                // pointInterval: 24 * 3600 * 1000
-            }
-        },
-        xAxis: {
-            type: 'datetime'
+
+    let options = {
+        // plotOptions: {
+            // connectNulls: true, //may be useful when passed null in data in future
+            // series: {
+                // animation: true
+            //     pointStart: startDate,
+            //     pointInterval: 24 * 3600 * 1000
+            // }
+        // },
+        xAxis:{
+            type: 'datetime',
+            minRange: 31 * 24 * 3600 * 1000,
+            min: startDate.getTime(),
+            max: endDate.getTime(),
+            tickInterval: 24 * 3600 * 1000
         },
         title: {
             text: '$TSLA Stock Price'
         },
         rangeSelector:{
-            allButtonsEnabled: true,
-            buttons: [{
-                type: 'all',
-                text: 'All'
-            }],
-            // selected: 0,
-            inputEnabled: false
+            enabled: false,
+            inputEnabled: false,
         },
-        series: [
-          {
+        series: [{
             name: '$TSLA',
             data: data,
             tooltip: {
                 valueDecimals: 2
-            }
-          }
-        ],
+            },
+            pointStart: startDate.getTime(),
+            // pointInterval: 24 * 3600 * 1000
+        }],
         navigator: {
             enabled: false
-            // adaptToUpdatedData: false,
-            // series: {
-            //     data: data
-            // }
+        },
+        scrollbar:{
+            enabled: false
         }
     }
 
@@ -73,10 +76,6 @@ function CustomChart(props){
         setData(newData)
         
     },[ shareContextObject.startDate, shareContextObject.endDate, props.data ])
-
-    // useEffect(()=>{
-    //     // options.plotOptions.series.pointStart = shareContextObject.startDate
-    // })
 
     return(
         <div className="graph">

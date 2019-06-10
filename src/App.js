@@ -1,9 +1,12 @@
 import React, {useState, useEffect} from 'react'
-import './App.css'
-import Calendar from './components/Calendar'
+
 import ShareContext from './util/ShareContext'
 import getData from './util/airtableAPI'
+
+import Calendar from './components/Calendar'
 import RightPanel from './components/RightPanel'
+
+import './App.css'
 
 function App() {
 

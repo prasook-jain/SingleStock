@@ -1,6 +1,8 @@
 import React, {useState, useEffect, useContext} from 'react'
 import dateFn from 'date-fns'
+
 import ShareContext from '../util/ShareContext'
+
 import './SelectDateComponent.css'
 
 function SelectDateComponent(props){
@@ -17,7 +19,7 @@ function SelectDateComponent(props){
     }, [sharesContextObject.startDate, sharesContextObject.endDate])
 
     const changeEndDate = (event) => {
-        console.log('changeSaleDate raw data : ', event.target.value)
+        // console.log('changeSaleDate raw data : ', event.target.value)
         
         let newEndDate = new Date(event.target.value);
         
@@ -32,7 +34,7 @@ function SelectDateComponent(props){
 
     const changeStartDate = (event) => {
     
-        console.log('changeBuyDate raw data : ', event.target.value)
+        // console.log('changeBuyDate raw data : ', event.target.value)
         
         let newStartDate = new Date(event.target.value)
         

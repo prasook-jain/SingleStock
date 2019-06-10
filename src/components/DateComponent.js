@@ -1,9 +1,12 @@
 import React, {useState, useEffect, useContext} from 'react'
-import ShareContext from '../util/ShareContext'
-import AddComponent from './AddComponent'
 import dateFn from 'date-fns'
-import './DateComponent.css'
+
+import ShareContext from '../util/ShareContext'
 import { createData, updateData, deleteData } from '../util/airtableAPI'
+import AddComponent from './AddComponent'
+
+import './DateComponent.css'
+
 function DateComponent(props){
 
     let shareContextObject = useContext(ShareContext)
@@ -116,7 +119,7 @@ function DateComponent(props){
         value = Number(value.toFixed(2))
         if(Object.values(share).length){
             if(value !== share.open){
-                console.log('update Data', updateDataAysnc(value))
+                 console.log('update Data', updateDataAysnc(value))
             }
         } else {
             console.log('create Data', createDataAysnc(value))
@@ -135,7 +138,7 @@ function DateComponent(props){
     }
 
     return(
-        <div className={"box "+(props.isMonth?"":"opaque ")+(date.getTime()===shareContextObject.startDate.getTime()?"start-date":"")+(date.getTime()===shareContextObject.endDate.getTime()?"end-date":"")}>
+        <div className={"box "+(props.isMonth?"":"opaque ")+(date.getTime()===shareContextObject.startDate.getTime()?"start-date ":"")+(date.getTime()===shareContextObject.endDate.getTime()?"end-date ":"")}>
             {Object.values(share).length?<div className="box-close-button" onClick={deleteShare}>x</div>:""}
             <div className="box-date" onClick={toggleAdd}>
                 {date.getDate()}

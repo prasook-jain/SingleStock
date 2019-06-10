@@ -1,8 +1,8 @@
 import React, {useState, useContext, useEffect} from 'react'
-import DateComponent from './DateComponent'
 import dateFn from 'date-fns'
 
 import ShareContext from '../util/ShareContext'
+import DateComponent from './DateComponent'
 
 import './Calendar.css'
 
@@ -91,12 +91,12 @@ function Calendar(){
 
         //update the context
         shareContextObject.updateStartDate(tempStartDate)
-        console.log(dateFn.getDaysInMonth(tempStartDate))
-        console.log(toLocalString(dateFn.getYear(tempStartDate),tempStartDate.getMonth(),dateFn.getDaysInMonth(tempStartDate)))
+        // console.log(dateFn.getDaysInMonth(tempStartDate))
+        // console.log(toLocalString(dateFn.getYear(tempStartDate),tempStartDate.getMonth(),dateFn.getDaysInMonth(tempStartDate)))
         let tempEndDate = new Date(toLocalString(dateFn.getYear(tempStartDate),tempStartDate.getMonth(),dateFn.getDaysInMonth(tempStartDate)));
         shareContextObject.updateEndDate(tempEndDate)
-        console.log('(From Calender click) start Date : ', tempStartDate)
-        console.log('(From Calender click) end Date : ', tempEndDate)
+        // console.log('(From Calender click) start Date : ', tempStartDate)
+        // console.log('(From Calender click) end Date : ', tempEndDate)
         let newMonth = tempStartDate.getMonth()
         let newYear = dateFn.getYear(tempStartDate)
         let newDates = getDates(newMonth, newYear)

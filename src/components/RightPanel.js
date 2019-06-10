@@ -1,7 +1,9 @@
 import React, {useContext, useState, useEffect} from 'react'
-import CustomChart from './CustomChart'
+
 import ShareContext from '../util/ShareContext'
+
 import MaxProfitComponent from './MaxProfitComponent'
+import CustomChart from './CustomChart'
 import SelectDateComponent from './SelectDateComponent'
 
 function RightPanel(props){
@@ -27,7 +29,7 @@ function RightPanel(props){
             for(let key of keys){
                 tempData.push([shareContextObject.shares[key].date.getTime(),shareContextObject.shares[key].open])
             }
-            console.log('(Right Panel) TempData : ',tempData)
+            // console.log('(Right Panel) TempData : ',tempData)
             setData(tempData)
         }
     },[shareContextObject.shares])

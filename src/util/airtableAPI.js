@@ -22,7 +22,6 @@ export async function createData(date, shareValue){
                 "low": 201.8
             }, function(err, record) {
                 if (err) {
-                  console.error(err);
                   newShare = {}
                   console.log('Err in async call : ', err);
                   reject(err)
@@ -80,7 +79,7 @@ export async function deleteData(shareObj){
                     console.error('Error inside deleteData', err)
                     resolve(false)
                 } else {
-                    console.log(deletedRecord)
+                    // console.log(deletedRecord)
                     resolve(true)
                 }
             })
@@ -122,7 +121,7 @@ export default async function getData(){
                     console.log('Errors in getData:', err);
                     reject(err);
                 } else {
-                    console.log('Inside getData, : ',shares)
+                    // console.log('Inside getData, : ',shares)
                     resolve(shares);
                 }
             })

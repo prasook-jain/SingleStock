@@ -1,6 +1,8 @@
 import React, {useState, useEffect, useContext} from 'react'
 import dateFn from 'date-fns'
+
 import ShareContext from '../util/ShareContext'
+
 import './MaxProfitComponent.css'
 
 //Helper function to find Max (DS-Algo)
@@ -8,7 +10,7 @@ const findMax = (startDate, endDate, data)=>{
     let isInRange = false
     let startIndex = -1;
     let considerShares = [];
-    console.log('Inside findMax fn',startDate, endDate, data)
+    // console.log('Inside findMax fn',startDate, endDate, data)
     for(let i=0; i<data.length; i++){
         let elem = data[i]
         
@@ -68,9 +70,9 @@ function MaxProfitComponent(props){
         let startDate = shareContextObject.startDate
         let endDate = shareContextObject.endDate
         let data = props.data
-        console.log('when props.data changes ', startDate.getDate(), endDate.getDate(), props.data)
+        // console.log('when props.data changes ', startDate.getDate(), endDate.getDate(), props.data)
         let [maxProfit, maxIndex, minIndex, msgStatus] = findMax(startDate, endDate, data);
-        console.log('after findMax calculation', maxProfit, maxIndex, minIndex)
+        // console.log('after findMax calculation', maxProfit, maxIndex, minIndex)
         
         setMaxProfit(maxProfit*10) //As in instruction said only 10 share and once
         if(msgStatus === 1){
