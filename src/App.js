@@ -1,15 +1,20 @@
 import React, {useState, useEffect} from 'react'
-import './App.css'
-import Calendar from './components/Calendar'
+
 import ShareContext from './util/ShareContext'
 import getData from './util/airtableAPI'
+
+import Calendar from './components/Calendar'
 import RightPanel from './components/RightPanel'
+
+import './App.css'
 
 function App() {
 
   const [data, setData] = useState({shares:{}, isFetched: false})
-  const [month, setMonth] = useState(0)
-  const [year, setYear] = useState(2019)
+  const [startDate, setStartDate] = useState(new Date('2019-01-01'))
+  const [endDate, setEndDate] = useState(new Date('2019-01-31'))
+  const [maxProfitDate, setMaxProfitDate] = useState('')
+  const [minProfitDate, setMinProfitDate] = useState('')
 
   // Fetch Data for first time when App component mount
   useEffect( () => {
@@ -26,30 +31,40 @@ function App() {
     if(!data.isFetched){
       console.log('FetchShares called',fetchShares())
     }
-  })
+  },[])
 
   return (
     <ShareContext.Provider value={{
-      month: month,
-      updateMonth : (month)=>{
-        setMonth(month)
-      },
-      year: year,
-      updateYear : (year)=>{
-        setYear(year)
-      },
       shares : data.shares,
       updateShares : (shares)=>{
           setData({
             shares: shares,
           })
       },
+      startDate: startDate,
+      updateStartDate : (newDate) => {
+        setStartDate(newDate)
+      },
+      endDate: endDate,
+      updateEndDate : (newDate) => {
+        setEndDate(newDate)
+      },
+      maxProfitDate: maxProfitDate,
+      updateMaxProfitDate : (newDate) => {
+        setMaxProfitDate(newDate)
+      },
+      minProfitDate: minProfitDate,
+      updateMinProfitDate : (newDate) => {
+        setMinProfitDate(newDate)
+      }
     }}>
       <div className="App">
         <div className="left-panel">
           <Calendar />
         </div>
-        <RightPanel />
+        <div className="right-panel">
+          <RightPanel />
+        </div>
       </div>
     </ShareContext.Provider>
   );

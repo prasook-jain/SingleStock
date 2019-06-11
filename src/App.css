@@ -2,7 +2,7 @@
   width: 100vw;
   height: 100vh;
   display: grid;
-
+  background-image:linear-gradient(to right, rgb(238, 150, 150), #f86d02);
   grid-template-rows: repeat(1, 1fr);
   grid-template-columns: 6.5fr 3.5fr;
 }
@@ -24,15 +24,16 @@
 
 .max-profit{
   grid-row: 1/2;
-  border: 1px solid black;
 }
 
 .graph{
   grid-row: 2/3;
-  border: 1px solid black;
 }
 
 .sale-buy-date{
   grid-row: 3/4;
-  border: 1px solid black;
+}
+
+.right-panel{
+  border-left: 1px solid white;
 }

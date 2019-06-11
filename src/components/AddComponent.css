@@ -27,3 +27,13 @@ legend{
 .box-add-input{
     padding : 10px;
 }
+
+.box-add-close-button{
+    position: absolute;
+    top : 5px;
+    right: 5px;
+    opacity: 0.5;
+}
+.box-add-close-button:hover{
+    opacity: 1.0;
+}
