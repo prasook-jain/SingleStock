@@ -32,6 +32,10 @@
     background: greenyellow;
     cursor: pointer;
 }
+.box-button > img{
+    width: 100%;
+    height: 100%;
+}
 .box-share{
     width: 75%;
     
@@ -54,4 +58,10 @@
 
 .start-date, .end-date{
     background: rgb(240, 240, 240);
+}
+div.max-profit-date{
+    background: rgb(221, 253, 246);
+}
+div.min-profit-date{
+    background: rgb(248, 223, 240);
 }

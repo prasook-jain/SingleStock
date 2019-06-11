@@ -55,6 +55,7 @@ function Calendar(){
 
     //Effective on change of month from right-panel
     useEffect(()=>{
+        console.log('Calendar cycle')
         let newMonth = shareContextObject.startDate.getMonth()
         let newYear = dateFn.getYear(shareContextObject.startDate)
         setMonth(newMonth)
@@ -91,12 +92,10 @@ function Calendar(){
 
         //update the context
         shareContextObject.updateStartDate(tempStartDate)
-        // console.log(dateFn.getDaysInMonth(tempStartDate))
-        // console.log(toLocalString(dateFn.getYear(tempStartDate),tempStartDate.getMonth(),dateFn.getDaysInMonth(tempStartDate)))
+
         let tempEndDate = new Date(toLocalString(dateFn.getYear(tempStartDate),tempStartDate.getMonth(),dateFn.getDaysInMonth(tempStartDate)));
         shareContextObject.updateEndDate(tempEndDate)
-        // console.log('(From Calender click) start Date : ', tempStartDate)
-        // console.log('(From Calender click) end Date : ', tempEndDate)
+        
         let newMonth = tempStartDate.getMonth()
         let newYear = dateFn.getYear(tempStartDate)
         let newDates = getDates(newMonth, newYear)

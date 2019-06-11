@@ -15,6 +15,7 @@ function RightPanel(props){
     const [data, setData] = useState([]);
 
     useEffect(()=>{
+        console.log('RightPanel cycle')
         let tempData = []
 
         if(Object.keys(shareContextObject.shares).length){
@@ -35,11 +36,11 @@ function RightPanel(props){
     },[shareContextObject.shares])
 
     return(
-        <div className="right-panel">
+        <React.Fragment>
             <MaxProfitComponent data={data}/>
             <CustomChart data={data}/>
             <SelectDateComponent />
-        </div>
+        </React.Fragment>
     )
 }
 

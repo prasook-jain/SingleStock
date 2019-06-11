@@ -67,6 +67,7 @@ function MaxProfitComponent(props){
     const [profitSaleDate, setProfitSaleDate] = useState('No share values')
 
     useEffect(()=>{
+        console.log('MaxProfit cycle')
         let startDate = shareContextObject.startDate
         let endDate = shareContextObject.endDate
         let data = props.data
@@ -76,8 +77,12 @@ function MaxProfitComponent(props){
         
         setMaxProfit(maxProfit*10) //As in instruction said only 10 share and once
         if(msgStatus === 1){
-            setProfitBuyDate(new Date(data[minIndex][0]))
-            setProfitSaleDate(new Date(data[maxIndex][0]))
+            let minDate = new Date(data[minIndex][0])
+            let maxDate = new Date(data[maxIndex][0])
+            setProfitBuyDate(minDate)
+            setProfitSaleDate(maxDate)
+            shareContextObject.updateMaxProfitDate(new Date(data[maxIndex][0]))
+            shareContextObject.updateMinProfitDate(new Date(data[minIndex][0]))
         } else if(msgStatus === -2){
             // console.log('(Inside Max Profit) : data.length', data.length)
             setProfitBuyDate('No Possible Profit')
@@ -87,7 +92,11 @@ function MaxProfitComponent(props){
             setProfitSaleDate('No share values')
         }
 
-    }, [shareContextObject.startDate, shareContextObject.endDate, props.data])
+    }, [
+        props.data,
+        shareContextObject.startDate,
+        shareContextObject.endDate
+    ])
 
     return(
         <div className="max-profit">

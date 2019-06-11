@@ -14,12 +14,12 @@ function SelectDateComponent(props){
     const [endDate, setEndDate] = useState(sharesContextObject.endDate)
 
     useEffect(()=>{
+        console.log('SelectDateComponent cycle')
         setStartDate(sharesContextObject.startDate)
         setEndDate(sharesContextObject.endDate)
     }, [sharesContextObject.startDate, sharesContextObject.endDate])
 
     const changeEndDate = (event) => {
-        // console.log('changeSaleDate raw data : ', event.target.value)
         
         let newEndDate = new Date(event.target.value);
         
@@ -33,17 +33,12 @@ function SelectDateComponent(props){
     }
 
     const changeStartDate = (event) => {
-    
-        // console.log('changeBuyDate raw data : ', event.target.value)
         
         let newStartDate = new Date(event.target.value)
         
-        if( newStartDate.getTime() < endDate.getTime() ) {
-            setStartDate(newStartDate)
-            sharesContextObject.updateStartDate(newStartDate)
-        } else {
-            console.log("Can't possible date change, invalid check range again")
-        }
+        setStartDate(newStartDate)
+        sharesContextObject.updateStartDate(newStartDate)
+
         event.preventDefault()
     }
 

@@ -13,6 +13,8 @@ function App() {
   const [data, setData] = useState({shares:{}, isFetched: false})
   const [startDate, setStartDate] = useState(new Date('2019-01-01'))
   const [endDate, setEndDate] = useState(new Date('2019-01-31'))
+  const [maxProfitDate, setMaxProfitDate] = useState('')
+  const [minProfitDate, setMinProfitDate] = useState('')
 
   // Fetch Data for first time when App component mount
   useEffect( () => {
@@ -29,7 +31,7 @@ function App() {
     if(!data.isFetched){
       console.log('FetchShares called',fetchShares())
     }
-  })
+  },[])
 
   return (
     <ShareContext.Provider value={{
@@ -46,13 +48,23 @@ function App() {
       endDate: endDate,
       updateEndDate : (newDate) => {
         setEndDate(newDate)
+      },
+      maxProfitDate: maxProfitDate,
+      updateMaxProfitDate : (newDate) => {
+        setMaxProfitDate(newDate)
+      },
+      minProfitDate: minProfitDate,
+      updateMinProfitDate : (newDate) => {
+        setMinProfitDate(newDate)
       }
     }}>
       <div className="App">
         <div className="left-panel">
           <Calendar />
         </div>
-        <RightPanel />
+        <div className="right-panel">
+          <RightPanel />
+        </div>
       </div>
     </ShareContext.Provider>
   );

@@ -6,8 +6,8 @@ function AddComponent(props){
 
     const [shareValue, setShareValue] = useState(props.shareValue)
 
-    const handleClick = (event) => {
-        props.submit(shareValue)
+    const handleSubmit= (event) => {
+        props.submit(Number(shareValue.toFixed(2)))
         event.preventDefault()
     }
     const handleChange = (event) => {
@@ -20,19 +20,30 @@ function AddComponent(props){
         }
         event.preventDefault()
     }
+
+    const handleClose = (event) => {
+        console.log('Inside handle Close')
+        props.closePopUp(event)
+        event.preventDefault()
+    }
     return(
-        <form onSubmit={handleClick} className="box-add-component">
+        <form onSubmit={handleSubmit} className="box-add-component">
             <div className="box-add-input">
                 <legend name="shareValue">Edit Shares</legend>
                 <input
                     type="number"
                     name="shareValue"
+                    steps="0.00001"
+                    min="0"
                     value={shareValue?shareValue:''}
                     onChange={handleChange}
                     placeholder={shareValue}
                 />
             </div>
-            <div className="box-add-button box-button" onClick={handleClick}>Submit</div>
+            <div className="box-add-button box-button" onClick={handleSubmit}>Submit</div>
+            <div className="box-add-close-button" onClick={handleClose}>
+                x
+            </div>
         </form>
     )
 }
